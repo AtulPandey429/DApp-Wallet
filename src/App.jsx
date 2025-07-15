@@ -18,7 +18,20 @@ function App() {
   const [txSuccess, setTxSuccess] = useState(false);
   const [txError, setTxError] = useState('');
   const [darkMode, setDarkMode] = useState(true);
+ useEffect(() => {
+    // Only load in development or if window width is mobile-like
+    const isDev = true;
+    const isMobile = window.innerWidth <= 768;
 
+    if ((isDev || isMobile) && typeof window !== 'undefined') {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/eruda';
+      script.onload = () => {
+        window.eruda && window.eruda.init();
+      };
+      document.body.appendChild(script);
+    }
+  }, []);
   useEffect(() => {
     document.body.style.background = darkMode ? '#121212' : '#ffffff';
     document.body.style.color = darkMode ? '#ffffff' : '#000000';
