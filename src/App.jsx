@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { useAppKit, useAppKitProvider } from './AppKitProvider';
 import { contractABI, contractAddress } from './abi';
@@ -7,12 +7,20 @@ import { BrowserProvider, Contract } from 'ethers';
 function App() {
   const { address, isConnected } = useAccount();
   const { modal } = useAppKit();
-  const { walletProvider } = useAppKitProvider('eip155'); // ✅ use wallet provider
+  const { walletProvider } = useAppKitProvider('eip155');
 
   const [playerName, setPlayerName] = useState('');
+  const [lookupName, setLookupName] = useState('');
+  const [playerInfo, setPlayerInfo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [txSuccess, setTxSuccess] = useState(false);
   const [txError, setTxError] = useState('');
+  const [darkMode, setDarkMode] = useState(true);
+
+  useEffect(() => {
+    document.body.style.background = darkMode ? '#121212' : '#ffffff';
+    document.body.style.color = darkMode ? '#ffffff' : '#000000';
+  }, [darkMode]);
 
   const handleAddPlayer = async () => {
     if (!playerName.trim()) return;
@@ -21,13 +29,14 @@ function App() {
     setTxError('');
 
     try {
-      const provider = new BrowserProvider(walletProvider); // ✅ Wrap AppKit wallet provider
-      const signer = await provider.getSigner();            // ✅ Get signer
-      const contract = new Contract(contractAddress, contractABI, signer); // ✅ Load contract
+      const provider = new BrowserProvider(walletProvider);
+      const signer = await provider.getSigner();
+      const contract = new Contract(contractAddress, contractABI, signer);
 
-      const tx = await contract.addPlayer(playerName);      // ✅ Call method
-      await tx.wait();                                      // ✅ Wait for confirmation
+      const tx = await contract.addPlayer(playerName);
+      await tx.wait();
       setTxSuccess(true);
+      setPlayerName('');
     } catch (err) {
       console.error(err);
       setTxError(err.message || 'Transaction failed');
@@ -36,13 +45,56 @@ function App() {
     }
   };
 
+  const handleGetPlayer = async () => {
+    if (!lookupName.trim()) return;
+    try {
+      const provider = new BrowserProvider(walletProvider);
+      const contract = new Contract(contractAddress, contractABI, provider);
+      const data = await contract.getPlayer(lookupName);
+      setPlayerInfo(data);
+    } catch (err) {
+      console.error(err);
+      setPlayerInfo(null);
+      alert('❌ Player not found or error fetching data.');
+    }
+  };
+
   return (
-    <div style={{ padding: 20 }}>
-      <h1>🏏 Cricket Scorecard</h1>
+    <div style={{ padding: 20, minHeight: '100vh' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1>🏏 Cricket Scorecard</h1>
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          style={{
+            padding: '4px 10px',
+            fontSize: '14px',
+            background: darkMode ? '#333' : '#ddd',
+            color: darkMode ? '#fff' : '#000',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer'
+          }}
+        >
+          {darkMode ? '☀️' : '🌙'}
+        </button>
+      </div>
+
       <p>Account: {isConnected ? address : 'Not connected'}</p>
 
       {!isConnected ? (
-        <button onClick={() => modal.open()}>Connect Wallet</button>
+        <button
+          onClick={() => modal.open()}
+          style={{
+            background: '#6200ea',
+            color: '#fff',
+            padding: '10px 20px',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer'
+          }}
+        >
+          Connect Wallet
+        </button>
       ) : (
         <div>
           <h3>Add Player</h3>
@@ -51,16 +103,34 @@ function App() {
             placeholder="Player name"
             value={playerName}
             onChange={(e) => setPlayerName(e.target.value)}
+            style={{
+              padding: '8px',
+              width: '200px',
+              marginRight: '10px',
+              borderRadius: '6px',
+              border: '1px solid #ccc',
+              background: darkMode ? '#1f1f1f' : '#fff',
+              color: darkMode ? '#fff' : '#000'
+            }}
           />
           <button
             onClick={handleAddPlayer}
             disabled={loading || !playerName.trim()}
+            style={{
+              padding: '8px 16px',
+              background: loading ? '#aaa' : '#03dac6',
+              color: '#000',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: loading ? 'not-allowed' : 'pointer'
+            }}
           >
             {loading ? 'Processing...' : 'Add Player'}
           </button>
 
-          {txSuccess && <p style={{ color: 'green' }}>Player added successfully!</p>}
-          {txError && <p style={{ color: 'red' }}>Error: {txError}</p>}
+          {txSuccess && <p style={{ color: 'green' }}>✅ Player added successfully!</p>}
+          {txError && <p style={{ color: 'red' }}>❌ Error: {txError}</p>}
+
         </div>
       )}
     </div>
