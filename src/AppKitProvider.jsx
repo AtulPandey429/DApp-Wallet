@@ -1,0 +1,45 @@
+import { createContext, useContext } from 'react';
+import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
+import { createStorage, cookieStorage, WagmiProvider } from 'wagmi';
+import { createAppKit, useAppKitProvider } from '@reown/appkit/react';
+import { base } from 'viem/chains';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const projectId = import.meta.env.VITE_REOWN_PROJECT_ID;
+
+const wagmiAdapter = new WagmiAdapter({
+  storage: createStorage({ storage: cookieStorage }),
+  ssr: false,
+  networks: [base],
+  projectId,
+});
+
+const queryClient = new QueryClient();
+
+export const modal = createAppKit({
+  adapters: [wagmiAdapter],
+  networks: wagmiAdapter.wagmiConfig.chains,
+  defaultNetwork: base,
+  projectId,
+  features: { allWallets: true, email: false, socials: false },
+});
+
+const AppKitContext = createContext({ modal });
+
+// Export custom AppKit context
+export const useAppKit = () => useContext(AppKitContext);
+
+// ✅ Export Reown's provider hook for wallet access (e.g. use with BrowserProvider)
+export { useAppKitProvider };
+
+export function AppKitProvider({ children }) {
+  return (
+    <AppKitContext.Provider value={{ modal }}>
+      <QueryClientProvider client={queryClient}>
+        <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+          {children}
+        </WagmiProvider>
+      </QueryClientProvider>
+    </AppKitContext.Provider>
+  );
+}

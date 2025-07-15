@@ -1,0 +1,318 @@
+/* Root Variables */
+:root {
+  --primary: #4a90e2;
+  --primary-dark: #3a6abf;
+  --accent: #50e3c2;
+  --danger: #e74c3c;
+  --light-bg: #f9fbfd;
+  --light: #ffffff;
+  --text: #2c3e50;
+  --border-radius: 12px;
+  --shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  --transition: all 0.3s ease;
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* html, body {
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom right, #f0faff, #fefefe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom right, #f0faff, #fefefe);
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+body {
+  display: block;
+  overflow-y: auto;
+  padding: 20px;
+}
+/* Container */
+.app-container {
+  width: 100%;
+  max-width: 1080px;
+  background-color: var(--light);
+  box-shadow: var(--shadow);
+  border-radius: var(--border-radius);
+  padding: 40px;
+}
+
+/* Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.app-title {
+  color: var(--primary);
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.wallet-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.wallet-address {
+  font-family: monospace;
+  font-size: 0.9rem;
+  background-color: #f1f1f1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: #444;
+}
+
+.owner-badge {
+  background-color: var(--accent);
+  color: white;
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  border-radius: 999px;
+  font-weight: bold;
+}
+
+/* Match Info */
+.match-info {
+  background-color: var(--light-bg);
+  padding: 25px;
+  border-radius: var(--border-radius);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.match-name {
+  font-size: 1.8rem;
+  color: var(--primary-dark);
+}
+
+.match-date {
+  font-size: 1rem;
+  color: #666;
+}
+
+.total-score {
+  margin-top: 15px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.score-value {
+  color: var(--primary);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  border-bottom: 2px solid #eee;
+  margin-bottom: 25px;
+}
+
+.tab {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #777;
+  position: relative;
+  transition: var(--transition);
+}
+
+.tab.active {
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--primary);
+}
+
+/* Player Stats */
+.player-stats {
+  margin-bottom: 30px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  background-color: #eee;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.stats-header,
+.stats-row {
+  display: contents;
+}
+
+.stats-header span {
+  background-color: var(--primary);
+  color: white;
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.stats-row span {
+  background-color: white;
+  padding: 12px;
+  text-align: center;
+}
+
+.player-name {
+  font-weight: 500;
+  text-align: left;
+  padding-left: 16px;
+}
+
+.player-runs {
+  color: #28a745;
+}
+
+.player-wickets {
+  color: var(--danger);
+}
+
+.no-players {
+  text-align: center;
+  padding: 20px;
+  background-color: #fff8f8;
+  border-radius: var(--border-radius);
+  color: #999;
+}
+
+/* Form Groups */
+.management-section .form-group {
+  background-color: #f7faff;
+  border: 1px solid #e3eaf2;
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group h4 {
+  margin-bottom: 15px;
+  color: var(--primary-dark);
+}
+
+.input-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+input {
+  border: none;
+  border-bottom: 2px solid #ccc;
+  background: transparent;
+  padding: 10px 8px;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+input:focus {
+  outline: none;
+  border-bottom: 2px solid var(--primary);
+}
+
+/* Buttons */
+button {
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+}
+
+.btn-danger {
+  background-color: var(--danger);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+}
+
+/* Danger Zone */
+.danger-zone {
+  background-color: #fff5f5;
+  border: 1px solid #f5c6cb;
+  padding: 20px;
+  border-radius: var(--border-radius);
+}
+
+.warning-text {
+  color: var(--danger);
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+/* Footer */
+.app-footer {
+  text-align: center;
+  padding-top: 30px;
+  color: #999;
+  font-size: 0.9rem;
+  margin-top: 40px;
+}
+.app-container {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .input-group {
+    grid-template-columns: 1fr;
+  }
+}

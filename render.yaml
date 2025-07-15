@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: cricket-scorecard-frontend
+    env: docker
+    autoDeploy: true
+    branch: main
+    region: oregon
