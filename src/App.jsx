@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount,useDisconnect } from 'wagmi';
 import { useAppKit, useAppKitProvider } from './AppKitProvider';
 import { contractABI, contractAddress } from './abi';
 import { BrowserProvider, Contract } from 'ethers';
 
 function App() {
+  const { disconnect } = useDisconnect();
+
   const { address, isConnected } = useAccount();
   const { modal } = useAppKit();
   const { walletProvider } = useAppKitProvider('eip155');
@@ -79,7 +81,25 @@ function App() {
         </button>
       </div>
 
-      <p>Account: {isConnected ? address : 'Not connected'}</p>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+  <p>Account: {isConnected ? address : 'Not connected'}</p>
+  {isConnected && (
+    <button
+      onClick={() => disconnect()}
+      style={{
+        background: '#e53935',
+        color: '#fff',
+        padding: '6px 12px',
+        border: 'none',
+        borderRadius: '6px',
+        cursor: 'pointer'
+      }}
+    >
+      Disconnect
+    </button>
+  )}
+</div>
+
 
       {!isConnected ? (
         <button
