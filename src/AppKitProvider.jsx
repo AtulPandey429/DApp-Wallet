@@ -22,6 +22,14 @@ export const modal = createAppKit({
   defaultNetwork: base,
   projectId,
   features: { allWallets: true, email: false, socials: false },
+  ui: {
+    themeMode: 'dark', // or 'light', or 'auto'
+    themeVariables: {
+      '--appkit-background-color': '#1a1a1a',
+      '--appkit-text-color': '#ffffff',
+      // You can tweak more colors here if needed
+    }
+  }
 });
 
 const AppKitContext = createContext({ modal });
