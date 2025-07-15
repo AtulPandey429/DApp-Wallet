@@ -5,7 +5,7 @@ import { createAppKit, useAppKitProvider } from '@reown/appkit/react';
 import { base } from 'viem/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-const projectId = import.meta.env.VITE_REOWN_PROJECT_ID;
+const projectId = '3ae7de7f2595ee410fa4f3b9e29e2944';
 
 const wagmiAdapter = new WagmiAdapter({
   storage: createStorage({ storage: cookieStorage }),
