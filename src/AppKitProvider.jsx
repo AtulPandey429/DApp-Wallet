@@ -21,7 +21,7 @@ export const modal = createAppKit({
   networks: wagmiAdapter.wagmiConfig.chains,
   defaultNetwork: base,
   projectId,
-  features: { allWallets: true, email: false, socials: false },
+  features: { allWallets: true, email: false, socials: false,wallets: ['walletConnect'], },
   ui: {
     themeMode: 'dark', // or 'light', or 'auto'
     themeVariables: {
